@@ -1,19 +1,37 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img alt="Vue logo" src="./assets/logo.png" />
+    <h1>{{ message }}</h1>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+  data() {
+    return {
+      message: "",
+    };
+  },
+  methods: {
+    onMessage: function (msg) {
+      console.log("onMessage: " + msg);
+      this.message = msg;
+    },
+    sendMessage: function (msg) {
+      console.log("sendMessage: " + msg);
+      this.$socket.emit("msgToServer", msg);
+    },
+  },
+  created() {
+    // it's working !!!!!!!!!
+    this.sendMessage("Hello World from wss");
+
+    this.sockets.subscribe("msgToClient", (msg) => {
+      this.onMessage(msg);
+    });
+  },
+};
 </script>
 
 <style>
