@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
     <h1>{{ message }}</h1>
   </div>
 </template>
@@ -11,6 +10,8 @@ export default {
   data() {
     return {
       message: "",
+      username: "Lukas",
+      room: "testroom",
     };
   },
   methods: {
@@ -20,16 +21,27 @@ export default {
     },
     sendMessage: function (msg) {
       console.log("sendMessage: " + msg);
-      this.$socket.emit("msgToServer", msg);
+      this.$socket.emit("msgToServer", {
+        sender: this.username,
+        message: msg,
+        room: this.room,
+      });
+    },
+    joinRoom: function (room) {
+      console.log("joinRoom: " + room);
+      this.$socket.emit("joinRoom", room);
     },
   },
   created() {
     // it's working !!!!!!!!!
-    this.sendMessage("Hello World from wss");
 
     this.sockets.subscribe("msgToClient", (msg) => {
       this.onMessage(msg);
     });
+
+    this.joinRoom(this.room);
+
+    this.sendMessage("Hello World from wss");
   },
 };
 </script>
