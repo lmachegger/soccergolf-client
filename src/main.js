@@ -2,6 +2,7 @@ import Vue from 'vue';
 import store from './store';
 import App from './App.vue';
 import VueSocketIO from 'vue-socket.io';
+import router from './router';
 
 Vue.use(new VueSocketIO({
   debug: true,
@@ -14,7 +15,7 @@ Vue.use(new VueSocketIO({
 }));
 
 new Vue({
-  // router,
+  router,
   store,
   render: h => h(App)
 }).$mount('#app');
