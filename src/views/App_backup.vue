@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+    <h3>{{ playerName }}</h3>
+    <h3>{{ roomName }}</h3>
     <h1>{{ message }}</h1>
     <p>{{ gameDataMessage }}</p>
   </div>
@@ -8,12 +10,14 @@
 <script>
 export default {
   name: "appBackup",
+  props: {
+    playerName: String,
+    roomName: String,
+  },
   data() {
     return {
       message: "",
       gameDataMessage: "",
-      username: "Lukas",
-      room: "testroom",
     };
   },
   methods: {
@@ -28,9 +32,9 @@ export default {
     sendMessage: function (msg) {
       console.log("sendMessage: " + msg);
       this.$socket.emit("msgToServer", {
-        sender: this.username,
+        sender: this.playerName,
         message: msg,
-        room: this.room,
+        room: this.roomName,
       });
     },
     joinRoom: function (room) {
@@ -38,7 +42,7 @@ export default {
       this.$socket.emit("joinRoom", room);
     },
   },
-  created() {
+  mounted() {
     // it's working !!!!!!!!!
     console.log("created");
     this.sockets.subscribe("msgToClient", (msg) => {
@@ -49,7 +53,10 @@ export default {
       this.onGameData(msg);
     });
 
-    this.joinRoom(this.room);
+    this.joinRoom({
+      player: this.playerName,
+      room: this.roomName,
+    });
 
     this.sendMessage("Hello World from wss");
     console.log("created end");

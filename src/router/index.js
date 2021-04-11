@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
+import appBackup from '../views/App_backup';
 
 Vue.use(VueRouter);
 
@@ -13,10 +14,8 @@ const routes = [
   {
     path: '/game',
     name: 'game',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/App_backup.vue')
+    component: appBackup,
+    props: true
   }
 ];
 
